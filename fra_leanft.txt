@@ -1,0 +1,211 @@
+<dependencies>
+    <!-- Cucumber dependencies -->
+    <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-java</artifactId>
+        <version>6.11.0</version>
+    </dependency>
+    <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-junit</artifactId>
+        <version>6.11.0</version>
+        <scope>test</scope>
+    </dependency>
+    
+    <!-- UFT Developer dependencies -->
+    <!-- Add the appropriate UFT Developer SDK dependencies here -->
+</dependencies>
+
+
+
+Feature: Web Application Testing
+
+  Scenario: Search for a keyword
+    Given I navigate to "https://www.example.com"
+    When I enter "UFT Developer" in the search box
+    And I click the search button
+    Then I should see search results containing "UFT Developer"
+
+
+import com.hp.lft.sdk.web.*;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
+
+public class WebSteps {
+
+    private Browser browser;
+
+    @Given("I navigate to {string}")
+    public void iNavigateTo(String url) throws Exception {
+        browser = BrowserFactory.launch(BrowserType.CHROME);
+        browser.navigate(url);
+    }
+
+    @When("I enter {string} in the search box")
+    public void iEnterInTheSearchBox(String keyword) throws Exception {
+        WebElement searchBox = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                .xpath("//input[@name='q']")
+                .build());
+        searchBox.setValue(keyword);
+    }
+
+    @When("I click the search button")
+    public void iClickTheSearchButton() throws Exception {
+        WebElement searchButton = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                .xpath("//input[@name='btnK']")
+                .build());
+        searchButton.click();
+    }
+
+    @Then("I should see search results containing {string}")
+    public void iShouldSeeSearchResultsContaining(String expectedText) throws Exception {
+        WebElement resultLink = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                .xpath("//h3[contains(text(),'" + expectedText + "')]")
+                .build());
+        if (!resultLink.exists()) {
+            throw new AssertionError("Search results do not contain '" + expectedText + "'");
+        }
+    }
+
+    // Other step definitions as needed
+
+    @After
+    public void closeBrowser() {
+        if (browser != null) {
+            browser.close();
+        }
+    }
+}
+
+
+
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+import org.junit.runner.RunWith;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        features = "src/test/resources",
+        glue = "path.to.step.definitions",
+        plugin = {"pretty", "html:target/cucumber-reports"}
+)
+public class TestRunner {
+}
+
+
+import com.hp.lft.sdk.web.*;
+
+public class WebTestUtils {
+
+    private Browser browser;
+
+    public WebTestUtils(Browser browser) {
+        this.browser = browser;
+    }
+
+    public void navigateToUrl(String url) {
+        browser.navigate(url);
+    }
+
+    public void enterTextInElement(String elementLocator, String text) {
+        WebElement webElement = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                .xpath(elementLocator)
+                .build());
+        webElement.setValue(text);
+    }
+
+    public void clickElement(String elementLocator) {
+        WebElement webElement = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                .xpath(elementLocator)
+                .build());
+        webElement.click();
+    }
+
+    public boolean verifyElementExists(String elementLocator) {
+        WebElement webElement = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                .xpath(elementLocator)
+                .build());
+        return webElement.exists();
+    }
+
+    // Add more generic functions as needed
+
+    // ...
+
+    // Example of a generic verification function
+    public void verifyTextInElement(String elementLocator, String expectedText) {
+        WebElement webElement = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                .xpath(elementLocator)
+                .build());
+        String actualText = webElement.getText();
+        if (actualText.equals(expectedText)) {
+            System.out.println("Verification passed: Text is as expected.");
+        } else {
+            System.out.println("Verification failed: Expected text - '" + expectedText + "', Actual text - '" + actualText + "'");
+        }
+    }
+}
+
+
+public class MainTestScript {
+
+    public static void main(String[] args) throws Exception {
+        Browser browser = BrowserFactory.launch(BrowserType.CHROME);
+
+        try {
+            WebTestUtils webUtils = new WebTestUtils(browser);
+
+            // Example usage of generic functions
+            webUtils.navigateToUrl("https://www.example.com");
+            webUtils.enterTextInElement("//input[@name='q']", "UFT Developer");
+            webUtils.clickElement("//input[@name='btnK']");
+            webUtils.verifyTextInElement("//h3[contains(text(),'UFT Developer')]", "UFT Developer");
+        } finally {
+            browser.close();
+        }
+    }
+}
+
+
+import com.hp.lft.sdk.web.*;
+
+public class WebAutomationExample {
+
+    public static void main(String[] args) throws Exception {
+        // Launch the browser (change the browser type as needed)
+        Browser browser = BrowserFactory.launch(BrowserType.CHROME);
+
+        try {
+            // Navigate to the web application
+            browser.navigate("https://www.example.com");
+
+            // Perform some actions on the web page
+            WebElement searchBox = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                    .tagName("INPUT")
+                    .name("q")
+                    .build());
+            searchBox.setValue("UFT Developer");
+
+            WebElement searchButton = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                    .tagName("INPUT")
+                    .name("btnK")
+                    .build());
+            searchButton.click();
+
+            // Verify results
+            WebElement resultLink = browser.describe(WebElement.class, new WebElementDescription.Builder()
+                    .tagName("H3")
+                    .innerText("UFT Developer")
+                    .build());
+            if (resultLink.exists()) {
+                System.out.println("Search results contain 'UFT Developer'. Test passed!");
+            } else {
+                System.out.println("Search results do not contain 'UFT Developer'. Test failed!");
+            }
+        } finally {
+            // Close the browser
+            browser.close();
+        }
+    }
+}
