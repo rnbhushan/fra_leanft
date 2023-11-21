@@ -1,0 +1,613 @@
+import com.hp.lft.sdk.web.*;
+
+
+        // Identify a web link by its text
+        Link linkByText = browser.describe(Link.class, new LinkDescription.Builder()
+                .innerText("Link Text")
+                .build());
+
+        // Perform actions on the identified link
+        linkByText.click();
+
+======================================================================================
+
+
+Link link = browser.describe(Link.class, new LinkDescription.Builder()
+    .partialLinkText("PartialText")
+    .build());
+link.click();
+
+====================================================================================
+
+how to pass browser instance to different java files using leanft
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+
+public class BrowserManager {
+    private static Browser browser;
+
+    public static Browser getBrowser() {
+        if (browser == null) {
+            // Initialize the browser if it's not already created
+            browser = BrowserFactory.launch(BrowserType.CHROME);
+        }
+        return browser;
+    }
+
+    public static void closeBrowser() {
+        if (browser != null) {
+            browser.close();
+        }
+    }
+}
+
+
+import com.hp.lft.sdk.web.Browser;
+
+public class TestClass {
+    public static void main(String[] args) {
+        // Get the browser instance from BrowserManager
+        Browser browser = BrowserManager.getBrowser();
+
+        // Perform actions on the browser
+        browser.navigate("https://example.com");
+        // Other test steps...
+
+        // Close the browser when done
+        BrowserManager.closeBrowser();
+    }
+}
+
+
+======================================================================================
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+import com.hp.lft.sdk.web.BrowserType;
+
+public class TestClass {
+
+    public static void main(String[] args) {
+        // Instantiate the browser
+        Browser browser = initializeBrowser();
+
+        // Call methods that require the browser instance
+        performActionsOnPage(browser);
+
+        // Close the browser when done
+        closeBrowser(browser);
+    }
+
+    private static Browser initializeBrowser() {
+        // Initialize and return the browser instance
+        return BrowserFactory.launch(BrowserType.CHROME);
+    }
+
+    private static void performActionsOnPage(Browser browser) {
+        // Perform actions on the provided browser instance
+        browser.navigate("https://example.com");
+        // Other test steps...
+    }
+
+    private static void closeBrowser(Browser browser) {
+        // Close the provided browser instance
+        if (browser != null) {
+            browser.close();
+        }
+    }
+}
+
+==================================================================================================
+
+// Locate the list element (adjust the description as needed)
+        List list = browser.describe(List.class, new ListDescription.Builder().tagName("ul").build());
+
+        // Get all list items within the list
+        ListItem[] listItems = list.getItems();
+
+        // Iterate through the list items to find the one with the specified name
+        for (ListItem listItem : listItems) {
+            if (listItem.getText().equals(itemName)) {
+                // Perform the action you need (e.g., click, select, etc.)
+                listItem.click();
+                break; // Exit the loop once the item is found
+            }
+
+
+=============================================================================
+
+public static void selectListItemByIndex(Browser browser, int index) {
+        // Locate the list element (adjust the description as needed)
+        List list = browser.describe(List.class, new ListDescription.Builder().tagName("ul").build());
+
+        // Get all list items within the list
+        ListItem[] listItems = list.getItems();
+
+        // Check if the index is valid
+        if (index >= 0 && index < listItems.length) {
+            // Perform the action on the list item at the specified index (e.g., click, select, etc.)
+            listItems[index].click();
+        } else {
+            System.out.println("Invalid index: " + index);
+        }
+    }
+
+========================================================================
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+import com.hp.lft.sdk.web.MenuItem;
+import com.hp.lft.sdk.web.Menu;
+import com.hp.lft.sdk.web.BrowserType;
+
+public class ClickMenuInSubmenu {
+
+    public static void main(String[] args) {
+        // Launch the browser
+        Browser browser = BrowserFactory.launch(BrowserType.CHROME);
+
+        // Sample usage of the function
+        clickMenuInSubmenu(browser, "File", "Open", "Document");
+
+        // Close the browser
+        browser.close();
+    }
+
+    /**
+     * Clicks on a menu inside a submenu.
+     *
+     * @param browser     The browser instance.
+     * @param topLevelMenu The name of the top-level menu.
+     * @param submenu      The name of the submenu.
+     * @param menuToClick  The name of the menu to click inside the submenu.
+     */
+    public static void clickMenuInSubmenu(Browser browser, String topLevelMenu, String submenu, String menuToClick) {
+        // Locate the top-level menu (adjust the description as needed)
+        Menu topLevelMenuObject = browser.describe(Menu.class, new MenuDescription.Builder().name(topLevelMenu).build());
+
+        // Open the top-level menu
+        topLevelMenuObject.select();
+
+        // Locate the submenu (adjust the description as needed)
+        Menu submenuObject = browser.describe(Menu.class, new MenuDescription.Builder().name(submenu).build());
+
+        // Open the submenu
+        submenuObject.select();
+
+        // Locate the menu inside the submenu (adjust the description as needed)
+        MenuItem menuToClickObject = browser.describe(MenuItem.class, new MenuItemDescription.Builder().name(menuToClick).build());
+
+        // Click on the menu inside the submenu
+        menuToClickObject.click();
+    }
+}
+
+
+=======================================================================================================================
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+import com.hp.lft.sdk.web.RadioGroup;
+import com.hp.lft.sdk.web.RadioButton;
+import com.hp.lft.sdk.web.BrowserType;
+
+public class SelectRadioButtonByLabel {
+
+    public static void main(String[] args) {
+        // Launch the browser
+        Browser browser = BrowserFactory.launch(BrowserType.CHROME);
+
+        // Sample usage of the function
+        selectRadioButtonByLabel(browser, "Option 2");
+
+        // Close the browser
+        browser.close();
+    }
+
+    /**
+     * Selects a radio button by its label.
+     *
+     * @param browser The browser instance.
+     * @param label   The label of the radio button to select.
+     */
+    public static void selectRadioButtonByLabel(Browser browser, String label) {
+        // Locate the radio group (adjust the description as needed)
+        RadioGroup radioGroup = browser.describe(RadioGroup.class, new RadioGroupDescription.Builder().tagName("input").type("radio").build());
+
+        // Get all radio buttons within the radio group
+        RadioButton[] radioButtons = radioGroup.getRadioButtons();
+
+        // Iterate through the radio buttons to find the one with the specified label
+        for (RadioButton radioButton : radioButtons) {
+            if (radioButton.getLabel().equals(label)) {
+                // Select the radio button
+                radioButton.select();
+                break; // Exit the loop once the radio button is found
+            }
+        }
+    }
+}
+
+
+======================================================================================
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+import com.hp.lft.sdk.web.CheckBox;
+import com.hp.lft.sdk.web.BrowserType;
+
+public class SelectCheckboxByLabel {
+
+    public static void main(String[] args) {
+        // Launch the browser
+        Browser browser = BrowserFactory.launch(BrowserType.CHROME);
+
+        // Sample usage of the function
+        selectCheckboxByLabel(browser, "Option 2");
+
+        // Close the browser
+        browser.close();
+    }
+
+    /**
+     * Selects a checkbox by its label.
+     *
+     * @param browser The browser instance.
+     * @param label   The label of the checkbox to select.
+     */
+    public static void selectCheckboxByLabel(Browser browser, String label) {
+        // Locate the checkbox (adjust the description as needed)
+        CheckBox checkBox = browser.describe(CheckBox.class, new CheckBoxDescription.Builder().tagName("input").type("checkbox").label(label).build());
+
+        // Select the checkbox
+        checkBox.set(true);
+    }
+}
+
+================================================================================
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+import com.hp.lft.sdk.web.Frame;
+import com.hp.lft.sdk.web.BrowserType;
+
+public class SwitchFrames {
+
+    public static void main(String[] args) {
+        // Launch the browser
+        Browser browser = BrowserFactory.launch(BrowserType.CHROME);
+
+        // Navigate to the web page with frames
+        browser.navigate("https://example.com");
+
+        // Sample usage of the function to switch frames
+        switchToFrame(browser, "frameName");
+
+        // Perform actions within the frame
+        // ...
+
+        // Switch back to the default content (main frame or no frame)
+        switchToDefaultContent(browser);
+
+        // Close the browser
+        browser.close();
+    }
+
+    /**
+     * Switches to a frame by name.
+     *
+     * @param browser   The browser instance.
+     * @param frameName The name of the frame to switch to.
+     */
+    public static void switchToFrame(Browser browser, String frameName) {
+        // Locate the frame using its name
+        Frame frame = browser.describe(Frame.class, new FrameDescription.Builder().name(frameName).build());
+
+        // Switch to the frame
+        frame.highlight();
+        frame.activate();
+    }
+
+    /**
+     * Switches back to the default content (main frame or no frame).
+     *
+     * @param browser The browser instance.
+     */
+    public static void switchToDefaultContent(Browser browser) {
+        // Switch back to the default content (main frame or no frame)
+        browser.describe(Frame.class).activate();
+    }
+}
+
+
+==============================================================================================
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+import com.hp.lft.sdk.web.BrowserDescription;
+import com.hp.lft.sdk.web.BrowserType;
+
+public class ActivateTabByName {
+
+    public static void main(String[] args) {
+        // Launch the browser
+        Browser browser = BrowserFactory.launch(BrowserType.CHROME);
+
+        // Open multiple tabs with different URLs
+        browser.navigate("https://www.example.com", BrowserFactory.LaunchMode.NEW_TAB);
+        browser.navigate("https://www.google.com", BrowserFactory.LaunchMode.NEW_TAB);
+        browser.navigate("https://www.bing.com", BrowserFactory.LaunchMode.NEW_TAB);
+
+        // Sample usage of the function to activate a tab by its name
+        activateTabByName(browser, "Bing");
+
+        // Perform actions within the activated tab
+        // ...
+
+        // Close the browser
+        browser.closeAllTabsAndBrowser();
+    }
+
+    /**
+     * Activates a browser tab by its name.
+     *
+     * @param browser The browser instance.
+     * @param tabName The name of the tab to activate.
+     */
+    public static void activateTabByName(Browser browser, String tabName) {
+        // Use BrowserDescription to find the tab by its name
+        BrowserDescription tabDescription = new BrowserDescription.Builder().attachedBrowserName(tabName).build();
+
+        // Activate the tab
+        browser.describe(Browser.class, tabDescription).activate();
+    }
+}
+===================================================================
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+import com.hp.lft.sdk.web.BrowserType;
+
+public class CloseAllBrowsers {
+
+    public static void main(String[] args) {
+        // Launch multiple browsers
+        Browser browser1 = BrowserFactory.launch(BrowserType.CHROME);
+        Browser browser2 = BrowserFactory.launch(BrowserType.FIREFOX);
+
+        // Perform actions in browsers
+        // ...
+
+        // Close all browsers when done
+        closeAllBrowsers();
+    }
+
+    /**
+     * Closes all open browsers.
+     */
+    public static void closeAllBrowsers() {
+        BrowserFactory.closeAllBrowsers();
+    }
+}
+===============================================================
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+import com.hp.lft.sdk.web.Link;
+import com.hp.lft.sdk.web.LinkDescription;
+import com.hp.lft.sdk.web.BrowserType;
+
+public class LoginPageLocators {
+
+    // Define locators for the Login page
+    public static Link signInLink(Browser browser) {
+        return browser.describe(Link.class, new LinkDescription.Builder().innerText("Sign In").build());
+    }
+
+    // Add more locators for the Login page as needed
+}
+
+public class HomePageLocators {
+
+    // Define locators for the Home page
+    public static Link profileLink(Browser browser) {
+        return browser.describe(Link.class, new LinkDescription.Builder().innerText("Profile").build());
+    }
+
+    // Add more locators for the Home page as needed
+}
+
+public class TestScript {
+
+    public static void main(String[] args) {
+        // Launch the browser
+        Browser browser = BrowserFactory.launch(BrowserType.CHROME);
+
+        // Navigate to the Login page
+        browser.navigate("https://example.com/login");
+
+        // Perform actions on the Login page using locators
+        LoginPageLocators.signInLink(browser).click();
+
+        // Perform login actions...
+        // ...
+
+        // Navigate to the Home page
+        browser.navigate("https://example.com/home");
+
+        // Perform actions on the Home page using locators
+        HomePageLocators.profileLink(browser).click();
+
+        // Perform profile actions...
+        // ...
+
+        // Close the browser
+        browser.close();
+    }
+}
+============================================================================
+Create a properties file (e.g., locators.properties):
+# locators.properties
+
+# Login Page Locators
+loginPage.signInLink=Sign In
+loginPage.usernameInput=Username
+loginPage.passwordInput=Password
+loginPage.loginButton=Log In
+
+# Home Page Locators
+homePage.profileLink=Profile
+homePage.settingsLink=Settings
+
+
+Create a utility class to load the properties file:
+
+import java.io.InputStream;
+import java.util.Properties;
+
+public class LocatorLoader {
+
+    private static Properties properties = new Properties();
+
+    static {
+        try (InputStream input = LocatorLoader.class.getClassLoader().getResourceAsStream("locators.properties")) {
+            properties.load(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getLocator(String key) {
+        return properties.getProperty(key);
+    }
+}
+Create a separate class for each page with methods to access locators:
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.Link;
+import com.hp.lft.sdk.web.LinkDescription;
+
+public class LoginPage {
+
+    public static Link signInLink(Browser browser) {
+        return browser.describe(Link.class, new LinkDescription.Builder().innerText(LocatorLoader.getLocator("loginPage.signInLink")).build());
+    }
+
+    public static String getUsernameLocator() {
+        return LocatorLoader.getLocator("loginPage.usernameInput");
+    }
+
+    // Add more methods for other locators on the Login page
+}
+
+public class HomePage {
+
+    public static Link profileLink(Browser browser) {
+        return browser.describe(Link.class, new LinkDescription.Builder().innerText(LocatorLoader.getLocator("homePage.profileLink")).build());
+    }
+
+    // Add more methods for other locators on the Home page
+}
+
+Use these locators in your test script:
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.BrowserFactory;
+import com.hp.lft.sdk.web.Link;
+import com.hp.lft.sdk.web.LinkDescription;
+import com.hp.lft.sdk.web.BrowserType;
+
+public class TestScript {
+
+    public static void main(String[] args) {
+        // Launch the browser
+        Browser browser = BrowserFactory.launch(BrowserType.CHROME);
+
+        // Navigate to the Login page
+        browser.navigate("https://example.com/login");
+
+        // Perform actions on the Login page using locators
+        LoginPage.signInLink(browser).click();
+
+        // Perform login actions...
+        // ...
+
+        // Navigate to the Home page
+        browser.navigate("https://example.com/home");
+
+        // Perform actions on the Home page using locators
+        HomePage.profileLink(browser).click();
+
+        // Perform profile actions...
+        // ...
+
+        // Close the browser
+        browser.close();
+    }
+}
+==========================================
+
+# locators.properties
+
+# Login Page Locators
+loginPage.signInLinkXPath=//a[contains(@id, 'signIn')]
+loginPage.usernameInputXPath=//input[@id='username']
+loginPage.passwordInputXPath=//input[@id='password']
+loginPage.loginButtonXPath=//button[@id='loginButton']
+
+# Home Page Locators
+homePage.profileLinkXPath=//a[contains(@class, 'profile')]
+homePage.settingsLinkXPath=//a[contains(@class, 'settings')]
+
+
+Java utility class (LocatorLoader.java):
+
+import java.io.InputStream;
+import java.util.Properties;
+
+public class LocatorLoader {
+
+    private static Properties properties = new Properties();
+
+    static {
+        try (InputStream input = LocatorLoader.class.getClassLoader().getResourceAsStream("locators.properties")) {
+            properties.load(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getLocator(String key) {
+        return properties.getProperty(key);
+    }
+}
+
+Example Java page classes:
+
+import com.hp.lft.sdk.web.Browser;
+import com.hp.lft.sdk.web.Link;
+import com.hp.lft.sdk.web.LinkDescription;
+
+public class LoginPage {
+
+    public static Link signInLink(Browser browser) {
+        String signInLinkXPath = LocatorLoader.getLocator("loginPage.signInLinkXPath");
+        return browser.describe(Link.class, new LinkDescription.Builder().xpath(signInLinkXPath).build());
+    }
+
+    public static String getUsernameInputXPath() {
+        return LocatorLoader.getLocator("loginPage.usernameInputXPath");
+    }
+
+    // Add more methods for other XPaths on the Login page
+}
+
+public class HomePage {
+
+    public static Link profileLink(Browser browser) {
+        String profileLinkXPath = LocatorLoader.getLocator("homePage.profileLinkXPath");
+        return browser.describe(Link.class, new LinkDescription.Builder().xpath(profileLinkXPath).build());
+    }
+
+    // Add more methods for other XPaths on the Home page
+}
