@@ -1,0 +1,32 @@
+Achieved Goals:
+•	Successfully automated 100% of BOSS mainframe UI test cases.
+•	Implemented a robust testing strategy resulting in 20% reduction in testing time.
+•	Achieved 30% improvement in test coverage, leading to better product quality.
+Number of Test Cases Automated:
+•	Automated 455 number of mainframe UI test cases, covering 100% of the application functionality.
+•	Introduced automation for critical paths, leading to increased efficiency in release cycles.
+Existing Framework Optimization:
+•	Conducted a comprehensive review of the existing automation framework.
+•	Identified and implemented 5 improvements to enhance the efficiency and stability of the framework.
+•	Reduced test execution time by optimizing test scripts and parallelizing test runs.
+Development of New Selenium Framework:
+•	Developed a modular Leant FT and RAFT -Selenium framework to ensure reusability and maintainability of test scripts.
+•	Integrated 2 best practices to create a scalable and adaptable framework which is sutiable to FRA container based applications
+•	Implemented data-driven and parameterized testing for increased flexibility.
+Interaction with Functional and Business Analysts:
+•	Collaborated closely with functional analysts to understand application requirements and user stories.
+•	Actively participated in requirement review sessions to align testing efforts with business objectives.
+•	Conducted regular feedback sessions to ensure automation covered critical business scenarios.
+Acquired Skills:
+•	Developed proficiency in Java and Python programming language for Selenium automation.
+•	Expanded knowledge of mainframe technologies and their integration with modern testing tools.
+•	Participated in 2 training programs like KAFFKA and Selenium to stay updated on the latest automation and testing trends.
+Future Recommendations:
+•	Suggested ongoing training programs for the team to keep up with emerging technologies.
+•	Proposed the adoption of LeanFT tool/framework for additional test coverage.
+•	Recommended regular knowledge-sharing sessions to foster a culture of continuous improvement.
+
+As a team memeber in Opex imperative Role:
+•	Actively participated on Opex imerative ,Suggested ongoing OPEX imperative updates for the team to keep up with innovation ideas ,patents,JDI’s and process optimization and hard/soft dollor savingins. This led to three patent applications and the successful execution of several Just Do It initiatives
+
+
