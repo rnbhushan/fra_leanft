@@ -1,0 +1,67 @@
+03.12 10:15 AM
+Processbuilder
+public class MainClass {
+    public static void main(String[] args) {
+        // Create an instance of ProcessBuilderExample
+        ProcessBuilderExample processBuilderExample = new ProcessBuilderExample();
+
+        // Create a ProcessBuilder instance
+        ProcessBuilder processBuilder = processBuilderExample.createProcessBuilder();
+
+        // Create an instance of AnotherClass and pass the ProcessBuilder
+        AnotherClass anotherClass = new AnotherClass(processBuilder);
+
+        // Call a method in AnotherClass that uses the shared ProcessBuilder
+        anotherClass.useSharedProcessBuilder();
+    }
+}
+
+
+
+
+
+
+import java.io.IOException;
+
+public class ProcessBuilderExample {
+    public ProcessBuilder createProcessBuilder() {
+        // Command to be executed
+        String command = "ls";
+
+        // Create and return a ProcessBuilder instance
+        return new ProcessBuilder(command);
+    }
+}
+
+
+
+
+import java.io.IOException;
+
+public class AnotherClass {
+    private ProcessBuilder sharedProcessBuilder;
+
+    // Constructor to receive the ProcessBuilder instance
+    public AnotherClass(ProcessBuilder processBuilder) {
+        this.sharedProcessBuilder = processBuilder;
+    }
+
+    public void useSharedProcessBuilder() {
+        try {
+            // Start the process using the shared ProcessBuilder
+            Process process = sharedProcessBuilder.start();
+
+            // Wait for the process to complete
+            int exitCode = process.waitFor();
+
+            // Print the exit code
+            System.out.println("Process exited with code: " + exitCode);
+
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
