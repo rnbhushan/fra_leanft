@@ -1,0 +1,28 @@
+Set objShell = CreateObject("WScript.Shell")
+
+' Function to check if the Cancel button exists on a popup
+Function CheckCancelButtonExists(windowTitle)
+    ' Launch the popup
+    objShell.Run "msg * /w 3 /v " & windowTitle, 0, True
+    
+    ' Wait for the popup window to appear
+    WScript.Sleep 2000
+    
+    ' Send "Alt+C" to press the Cancel button
+    objShell.SendKeys "%c"
+    
+    ' Check if the popup exists after sending keys
+    WScript.Sleep 1000
+    If objShell.AppActivate(windowTitle) Then
+        CheckCancelButtonExists = True
+    Else
+        CheckCancelButtonExists = False
+    End If
+End Function
+
+' Example usage
+If CheckCancelButtonExists("Popup Window Title") Then
+    MsgBox "Cancel button exists."
+Else
+    MsgBox "Cancel button does not exist."
+End If
